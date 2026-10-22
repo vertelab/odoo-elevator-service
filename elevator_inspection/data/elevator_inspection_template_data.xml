@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ================================================================
+         Elevator inspection templates.
+
+         One per elevator type, with the points BFS 2011:12 requires. The
+         points are the same across types in the main; what differs is which
+         components exist — a hydraulic elevator has no traction sheave, a
+         stair lift has no shaft.
+
+         allow_red_remark is set per point: a worn floor covering is a
+         remark, a failed brake is a red remark.
+         ================================================================ -->
+
+    <record id="template_traction" model="maintenance.inspection.template">
+        <field name="name">BFS-besiktning — Linhiss</field>
+        <field name="inspection_type">statutory</field>
+        <field name="elevator_type_id" ref="elevator_base.elevator_type_traction"/>
+        <field name="interval_months">12</field>
+        <field name="description">Årlig besiktning enligt BFS 2011:12 för linhiss.</field>
+    </record>
+
+    <record id="template_traction_1" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">10</field>
+        <field name="name">Bärlinor — slitage, trådbrott, infästning</field>
+        <field name="instruction">Kontrollera trådbrott, korrosion och att linorna ligger rätt i spåren.</field>
+    </record>
+    <record id="template_traction_2" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">20</field>
+        <field name="name">Broms — funktion och belägg</field>
+        <field name="instruction">Bromsen ska hålla full last utan slirning.</field>
+    </record>
+    <record id="template_traction_3" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">30</field>
+        <field name="name">Fångapparat och hastighetsvakt</field>
+        <field name="instruction">Utlösning ska vara blockerad vid normal drift.</field>
+    </record>
+    <record id="template_traction_4" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">40</field>
+        <field name="name">Dörrlås och dörrkontakt</field>
+        <field name="instruction">Hissen får inte starta med öppen dörr.</field>
+    </record>
+    <record id="template_traction_5" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">50</field>
+        <field name="name">Nödtelefon — funktion och larmkedja</field>
+        <field name="instruction">Ring upp och verifiera att larmet når rätt mottagare.</field>
+    </record>
+    <record id="template_traction_6" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">60</field>
+        <field name="name">Nödbelysning i korg</field>
+    </record>
+    <record id="template_traction_7" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">70</field>
+        <field name="name">Skyltar — märkskylt, lastgräns, besiktningsmärke</field>
+        <field name="allow_red_remark" eval="False"/>
+    </record>
+    <record id="template_traction_8" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_traction"/>
+        <field name="sequence">80</field>
+        <field name="name">Korg — golv, väggar, ledstång</field>
+        <field name="allow_red_remark" eval="False"/>
+    </record>
+
+    <!-- ── Hydraulisk ──────────────────────────────────────────────────── -->
+    <record id="template_hydraulic" model="maintenance.inspection.template">
+        <field name="name">BFS-besiktning — Hydraulhiss</field>
+        <field name="inspection_type">statutory</field>
+        <field name="elevator_type_id" ref="elevator_base.elevator_type_hydraulic"/>
+        <field name="interval_months">12</field>
+    </record>
+    <record id="template_hydraulic_1" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">10</field>
+        <field name="name">Cylinder och kolvtätning — läckage</field>
+    </record>
+    <record id="template_hydraulic_2" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">20</field>
+        <field name="name">Hydraulslangar och kopplingar</field>
+    </record>
+    <record id="template_hydraulic_3" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">30</field>
+        <field name="name">Oljenivå och oljekvalitet</field>
+        <field name="allow_red_remark" eval="False"/>
+    </record>
+    <record id="template_hydraulic_4" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">40</field>
+        <field name="name">Broms — funktion</field>
+    </record>
+    <record id="template_hydraulic_5" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">50</field>
+        <field name="name">Dörrlås och dörrkontakt</field>
+    </record>
+    <record id="template_hydraulic_6" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">60</field>
+        <field name="name">Nödtelefon — funktion</field>
+    </record>
+    <record id="template_hydraulic_7" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">70</field>
+        <field name="name">Nödbelysning i korg</field>
+    </record>
+    <record id="template_hydraulic_8" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_hydraulic"/>
+        <field name="sequence">80</field>
+        <field name="name">Skyltar och märkning</field>
+        <field name="allow_red_remark" eval="False"/>
+    </record>
+
+    <!-- ── Maskinrumslös ───────────────────────────────────────────────── -->
+    <record id="template_mrl" model="maintenance.inspection.template">
+        <field name="name">BFS-besiktning — Maskinrumslös</field>
+        <field name="inspection_type">statutory</field>
+        <field name="elevator_type_id" ref="elevator_base.elevator_type_mrl"/>
+        <field name="interval_months">12</field>
+    </record>
+    <record id="template_mrl_1" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_mrl"/>
+        <field name="sequence">10</field>
+        <field name="name">Maskin — placering, infästning, åtkomst</field>
+    </record>
+    <record id="template_mrl_2" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_mrl"/>
+        <field name="sequence">20</field>
+        <field name="name">Bärlinor — slitage</field>
+    </record>
+    <record id="template_mrl_3" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_mrl"/>
+        <field name="sequence">30</field>
+        <field name="name">Broms — funktion</field>
+    </record>
+    <record id="template_mrl_4" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_mrl"/>
+        <field name="sequence">40</field>
+        <field name="name">Nödmanöver — utrymning utan maskinrum</field>
+        <field name="instruction">Kritiskt: utan maskinrum är nödmanövern enda vägen ut.</field>
+    </record>
+    <record id="template_mrl_5" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_mrl"/>
+        <field name="sequence">50</field>
+        <field name="name">Dörrlås och dörrkontakt</field>
+    </record>
+    <record id="template_mrl_6" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_mrl"/>
+        <field name="sequence">60</field>
+        <field name="name">Nödtelefon — funktion</field>
+    </record>
+    <record id="template_mrl_7" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_mrl"/>
+        <field name="sequence">70</field>
+        <field name="name">Nödbelysning i korg</field>
+    </record>
+
+    <!-- ── Trapphiss ───────────────────────────────────────────────────── -->
+    <record id="template_stair_lift" model="maintenance.inspection.template">
+        <field name="name">BFS-besiktning — Trapphiss</field>
+        <field name="inspection_type">statutory</field>
+        <field name="elevator_type_id" ref="elevator_base.elevator_type_stair_lift"/>
+        <field name="interval_months">12</field>
+    </record>
+    <record id="template_stair_lift_1" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_stair_lift"/>
+        <field name="sequence">10</field>
+        <field name="name">Säkerhetsanordning — hinderdetektering</field>
+    </record>
+    <record id="template_stair_lift_2" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_stair_lift"/>
+        <field name="sequence">20</field>
+        <field name="name">Säkerhetsbälte och fäste</field>
+    </record>
+    <record id="template_stair_lift_3" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_stair_lift"/>
+        <field name="sequence">30</field>
+        <field name="name">Skena och infästning i trappan</field>
+    </record>
+    <record id="template_stair_lift_4" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_stair_lift"/>
+        <field name="sequence">40</field>
+        <field name="name">Broms och parkeringsläge</field>
+    </record>
+    <record id="template_stair_lift_5" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_stair_lift"/>
+        <field name="sequence">50</field>
+        <field name="name">Skyltar och märkning</field>
+        <field name="allow_red_remark" eval="False"/>
+    </record>
+
+    <!-- ── Generell, alla typer ────────────────────────────────────────── -->
+    <record id="template_generic" model="maintenance.inspection.template">
+        <field name="name">BFS-besiktning — Allmän</field>
+        <field name="inspection_type">statutory</field>
+        <field name="interval_months">12</field>
+        <field name="description">Används när hisstypen saknar egen mall.</field>
+    </record>
+    <record id="template_generic_1" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_generic"/>
+        <field name="sequence">10</field>
+        <field name="name">Broms — funktion</field>
+    </record>
+    <record id="template_generic_2" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_generic"/>
+        <field name="sequence">20</field>
+        <field name="name">Dörrlås och dörrkontakt</field>
+    </record>
+    <record id="template_generic_3" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_generic"/>
+        <field name="sequence">30</field>
+        <field name="name">Nödtelefon — funktion</field>
+    </record>
+    <record id="template_generic_4" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_generic"/>
+        <field name="sequence">40</field>
+        <field name="name">Nödbelysning</field>
+    </record>
+    <record id="template_generic_5" model="maintenance.inspection.template.line">
+        <field name="template_id" ref="template_generic"/>
+        <field name="sequence">50</field>
+        <field name="name">Skyltar och märkning</field>
+        <field name="allow_red_remark" eval="False"/>
+    </record>
+
+
+    <!-- ================================================================
+         Link the templates to their elevator types.
+
+         Done here rather than on the elevator.type records: elevator_base
+         does not know that inspection templates exist, and putting the
+         reference there would make the base module depend on this one.
+         ================================================================ -->
+    <function model="elevator.type" name="write">
+        <value eval="[ref('elevator_base.elevator_type_traction')]"/>
+        <value eval="{'inspection_template_id': ref('template_traction'), 'inspection_interval_months': 12}"/>
+    </function>
+    <function model="elevator.type" name="write">
+        <value eval="[ref('elevator_base.elevator_type_hydraulic')]"/>
+        <value eval="{'inspection_template_id': ref('template_hydraulic'), 'inspection_interval_months': 12}"/>
+    </function>
+    <function model="elevator.type" name="write">
+        <value eval="[ref('elevator_base.elevator_type_mrl')]"/>
+        <value eval="{'inspection_template_id': ref('template_mrl'), 'inspection_interval_months': 12}"/>
+    </function>
+    <function model="elevator.type" name="write">
+        <value eval="[ref('elevator_base.elevator_type_stair_lift')]"/>
+        <value eval="{'inspection_template_id': ref('template_stair_lift'), 'inspection_interval_months': 12}"/>
+    </function>
+
+</odoo>

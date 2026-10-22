@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================
+         Elevator fields on the inspection form.
+
+         Anchored on //group and //notebook, not on named fields from the
+         generic module: maintenance_equipment_inspection is in another repo
+         and may be extended independently.
+         ================================================================ -->
+    <record id="equipment_inspection_form_elevator" model="ir.ui.view">
+        <field name="name">maintenance.equipment.inspection.form.elevator</field>
+        <field name="model">maintenance.equipment.inspection</field>
+        <field name="inherit_id" ref="maintenance_equipment_inspection.equipment_inspection_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//group" position="inside">
+                <group string="Elevator" invisible="not is_elevator_inspection">
+                    <field name="is_elevator_inspection" invisible="1"/>
+                    <field name="elevator_inspection_remark" widget="badge"
+                           decoration-success="elevator_inspection_remark == 'none'"
+                           decoration-warning="elevator_inspection_remark == 'remark'"
+                           decoration-danger="elevator_inspection_remark == 'red_remark'"/>
+                    <field name="out_of_service_applied"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- List: show the elevator remark next to the generic one, so the list
+         reads the same whether it is filtered by elevator or not. -->
+    <record id="equipment_inspection_list_elevator" model="ir.ui.view">
+        <field name="name">maintenance.equipment.inspection.list.elevator</field>
+        <field name="model">maintenance.equipment.inspection</field>
+        <field name="inherit_id" ref="maintenance_equipment_inspection.equipment_inspection_list"/>
+        <field name="arch" type="xml">
+            <field name="remark_level" position="after">
+                <field name="out_of_service_applied" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Search: elevator inspections only, and those that stopped an asset. -->
+    <record id="equipment_inspection_search_elevator" model="ir.ui.view">
+        <field name="name">maintenance.equipment.inspection.search.elevator</field>
+        <field name="model">maintenance.equipment.inspection</field>
+        <field name="inherit_id" ref="maintenance_equipment_inspection.equipment_inspection_search"/>
+        <field name="arch" type="xml">
+            <filter name="filter_red_remark" position="before">
+                <filter name="filter_elevator" string="Elevator Inspections"
+                        domain="[('is_elevator_inspection', '=', True)]"/>
+                <filter name="filter_stopped" string="Took Out of Service"
+                        domain="[('out_of_service_applied', '=', True)]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+
+</odoo>

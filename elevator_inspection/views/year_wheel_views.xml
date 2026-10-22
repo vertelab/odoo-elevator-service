@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================
+         Year wheel — the inspection season at a glance.
+
+         Elevator inspection is seasonal in practice: the inspection bodies
+         work through their portfolios in a fixed order, and a company with
+         400 elevators needs to see when the load falls. The wheel shows
+         every inspection by month, coloured by remark level, which answers
+         "when is our peak, and how many will come back red?".
+
+         date_field is the inspection date; color_field is the remark level
+         so a red month is visible without opening anything.
+         ================================================================ -->
+    <record id="view_equipment_inspection_year_wheel" model="ir.ui.view">
+        <field name="name">maintenance.equipment.inspection.year_wheel</field>
+        <field name="model">maintenance.equipment.inspection</field>
+        <field name="type">year_wheel</field>
+        <field name="arch" type="xml">
+            <year_wheel string="Inspection Year"
+                        date_field="date"
+                        color_field="remark_level"
+                        label_field="equipment_id"
+                        start_month="1"
+                        segments="12"/>
+        </field>
+    </record>
+
+    <record id="action_equipment_inspection_year_wheel" model="ir.actions.act_window">
+        <field name="name">Inspection Year Wheel</field>
+        <field name="res_model">maintenance.equipment.inspection</field>
+        <field name="view_mode">year_wheel,list,form</field>
+        <field name="view_id" ref="view_equipment_inspection_year_wheel"/>
+        <field name="domain">[('is_elevator_inspection', '=', True)]</field>
+        <field name="context">{'search_default_filter_elevator': 1}</field>
+    </record>
+
+    <menuitem id="menu_equipment_inspection_year_wheel"
+              name="Inspection Year"
+              parent="elevator_base.menu_elevator_root"
+              action="action_equipment_inspection_year_wheel"
+              sequence="20"/>
+
+</odoo>
