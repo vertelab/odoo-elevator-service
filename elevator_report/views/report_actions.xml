@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Print buttons. The reports are also bound to the models (so they
+         appear under Print in the list view); these put them where the
+         user actually is when they need them. -->
+
+    <record id="equipment_inspection_form_print" model="ir.ui.view">
+        <field name="name">maintenance.equipment.inspection.form.print</field>
+        <field name="model">maintenance.equipment.inspection</field>
+        <field name="inherit_id" ref="maintenance_equipment_inspection.equipment_inspection_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(action_report_inspection_protocol)d" type="action"
+                        string="Skriv ut protokoll" icon="fa-print"
+                        invisible="state != 'done'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="maintenance_equipment_form_print" model="ir.ui.view">
+        <field name="name">maintenance.equipment.form.print</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button name="%(action_report_elevator_sheet)d" type="action"
+                        class="oe_stat_button" icon="fa-file-text-o"
+                        invisible="not is_elevator">
+                    <span class="o_stat_text">Hisskort</span>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

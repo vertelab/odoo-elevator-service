@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================
+         Besiktningsprotokoll — the protocol the inspection body signs.
+
+         Overrides the plain template from elevator_portal. Same structure,
+         with the remark level spelled out rather than coded: the reader is
+         often a building owner or an authority, not someone who knows what
+         a red badge means.
+         ================================================================ -->
+    <template id="report_inspection_protocol"
+              inherit_id="elevator_portal.report_inspection_protocol"
+              primary="True">
+        <xpath expr="//div[@class='page']" position="replace">
+            <div class="page">
+                <div class="row mb-4">
+                    <div class="col-8">
+                        <h2 class="mb-0">Besiktningsprotokoll</h2>
+                        <p class="text-muted mb-0">
+                            Hissbesiktning enligt BFS 2011:12
+                        </p>
+                    </div>
+                    <div class="col-4 text-end">
+                        <strong><t t-esc="inspection.name"/></strong><br/>
+                        <t t-esc="inspection.date"/>
+                    </div>
+                </div>
+
+                <table class="table table-sm table-borderless mb-4">
+                    <tr>
+                        <td style="width:25%"><strong>Hiss</strong></td>
+                        <td>
+                            <t t-esc="inspection.equipment_id.elevator_number or inspection.equipment_id.name"/>
+                            <span t-if="inspection.equipment_id.manufacturing_number"
+                                  class="text-muted">
+                                (tillv.nr <t t-esc="inspection.equipment_id.manufacturing_number"/>)
+                            </span>
+                        </td>
+                        <td style="width:25%"><strong>Hissnummer</strong></td>
+                        <td><t t-esc="inspection.equipment_id.elevator_number or '–'"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Fastighet</strong></td>
+                        <td>
+                            <t t-esc="inspection.equipment_id.partner_id.name or '–'"/><br/>
+                            <span class="text-muted">
+                                <t t-esc="inspection.equipment_id.partner_id.street or ''"/>
+                                <t t-esc="inspection.equipment_id.partner_id.city or ''"/>
+                            </span>
+                        </td>
+                        <td><strong>Hissmodell</strong></td>
+                        <td><t t-esc="inspection.equipment_id.model or '–'"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Besiktningsman</strong></td>
+                        <td><t t-esc="inspection.inspector_id.name"/></td>
+                        <td><strong>Besiktningsorgan</strong></td>
+                        <td><t t-esc="inspection.inspection_body_id.name or '–'"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Besiktningstyp</strong></td>
+                        <td>
+                            <t t-esc="dict(inspection._fields['inspection_type'].selection).get(inspection.inspection_type)"/>
+                        </td>
+                        <td><strong>Nästa besiktning</strong></td>
+                        <td><t t-esc="inspection.equipment_id.next_inspection_date or '–'"/></td>
+                    </tr>
+                </table>
+
+                <h4 class="mt-4">Kontrollpunkter</h4>
+                <table class="table table-sm">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width:6%">Nr</th>
+                            <th style="width:44%">Kontrollpunkt</th>
+                            <th style="width:16%">Resultat</th>
+                            <th>Anmärkning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="counter" t-value="0"/>
+                        <t t-foreach="inspection.line_ids.sorted('sequence')" t-as="line">
+                            <t t-set="counter" t-value="counter + 1"/>
+                            <tr>
+                                <td><t t-esc="counter"/></td>
+                                <td>
+                                    <t t-esc="line.name"/>
+                                    <div t-if="line.instruction" class="text-muted small">
+                                        <t t-esc="line.instruction"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <t t-if="line.result == 'ok'">OK</t>
+                                    <t t-elif="line.result == 'remark'">
+                                        <strong>Anmärkning</strong>
+                                    </t>
+                                    <t t-elif="line.result == 'red_remark'">
+                                        <strong>Röd anmärkning</strong>
+                                    </t>
+                                    <t t-else="">Ej tillämplig</t>
+                                </td>
+                                <td><t t-esc="line.note or ''"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+
+                <!-- The verdict, spelled out. This is the paragraph that gets
+                     read when something goes wrong later. -->
+                <div class="mt-4 p-3"
+                     t-att-style="'border:2px solid #%s; border-radius:4px;' % ('28a745' if inspection.remark_level == 'none' else 'ffc107' if inspection.remark_level == 'remark' else 'dc3545')">
+                    <h5 class="mb-2">Sammanvägd bedömning</h5>
+                    <t t-if="inspection.remark_level == 'none'">
+                        <p class="mb-0">
+                            Inga anmärkningar. Hissen får fortsatt användas.
+                        </p>
+                    </t>
+                    <t t-elif="inspection.remark_level == 'remark'">
+                        <p class="mb-0">
+                            Hissen har <strong><t t-esc="inspection.remark_count"/></strong>
+                            anmärkning(ar). Anmärkningarna ska åtgärdas inom
+                            avtalad tid. Hissen får användas under tiden.
+                        </p>
+                    </t>
+                    <t t-else="">
+                        <p class="mb-0">
+                            <strong>Röd anmärkning.</strong>
+                            Hissen får <strong>inte användas</strong> förrän
+                            felet är åtgärdat och ny besiktning genomförts.
+                            Avställningsdatum:
+                            <t t-esc="inspection.equipment_id.out_of_order_date or inspection.date"/>.
+                        </p>
+                    </t>
+                </div>
+
+                <div t-if="inspection.notes" class="mt-4">
+                    <h5>Övriga noteringar</h5>
+                    <div t-field="inspection.notes"/>
+                </div>
+
+                <div class="row mt-5 pt-4">
+                    <div class="col-4">
+                        <div style="border-top:1px solid #000; padding-top:4px;">
+                            Besiktningsman
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="border-top:1px solid #000; padding-top:4px;">
+                            Ort och datum
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="border-top:1px solid #000; padding-top:4px;">
+                            Mottagare (fastighetsägare)
+                        </div>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-muted small">
+                    Protokollet är utfärdat enligt BFS 2011:12. Vid röd
+                    anmärkning ska hissen omedelbart tas ur drift och
+                    anmälan göras till tillsynsmyndigheten.
+                </p>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- ================================================================
+         Servicerapport — what the technician did.
+
+         A work order, not an inspection: what was found, what was done,
+         time and material. The customer signs it on site.
+         ================================================================ -->
+    <template id="report_service_order" name="Service Report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="order">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="row mb-4">
+                            <div class="col-8">
+                                <h2 class="mb-0">Servicerapport</h2>
+                                <p class="text-muted mb-0">
+                                    <t t-esc="order.name"/>
+                                </p>
+                            </div>
+                            <div class="col-4 text-end">
+                                <t t-esc="order.date_start or ''"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm table-borderless mb-4">
+                            <tr>
+                                <td style="width:25%"><strong>Hiss</strong></td>
+                                <td>
+                                    <t t-esc="order.equipment_id.elevator_number or order.equipment_id.name or '–'"/>
+                                </td>
+                                <td style="width:25%"><strong>Fastighet</strong></td>
+                                <td><t t-esc="order.partner_id.name or '–'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ordertyp</strong></td>
+                                <td><t t-esc="order.product_type.name or '–'"/></td>
+                                <td><strong>Tekniker</strong></td>
+                                <td>
+                                    <t t-esc="', '.join(order.requested_employee_ids.mapped('name')) or '–'"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <h5>Utfört arbete</h5>
+                        <div t-if="order.description" class="mb-4">
+                            <t t-esc="order.description"/>
+                        </div>
+                        <p t-else="" class="text-muted mb-4">Ingen beskrivning angiven.</p>
+
+                        <t t-if="order.checklist_item_ids">
+                            <h5>Servicechecklista</h5>
+                            <table class="table table-sm">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width:8%">Klar</th>
+                                        <th>Uppgift</th>
+                                        <th>Anteckning</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="order.checklist_item_ids.sorted('sequence')" t-as="item">
+                                        <tr>
+                                            <td>
+                                                <t t-if="item.done">✓</t>
+                                                <t t-else="">–</t>
+                                            </td>
+                                            <td><t t-esc="item.name"/></td>
+                                            <td><t t-esc="item.note or ''"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <div class="row mt-5 pt-4">
+                            <div class="col-6">
+                                <div style="border-top:1px solid #000; padding-top:4px;">
+                                    Tekniker
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div style="border-top:1px solid #000; padding-top:4px;">
+                                    Kundens underskrift
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ================================================================
+         Hisskort — one page per elevator.
+
+         What a technician carries: identity, technical configuration,
+         inspection dates, agreement terms, emergency phone. One page,
+         because it is read standing in a stairwell.
+         ================================================================ -->
+    <template id="report_elevator_sheet" name="Elevator Sheet">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="equipment">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 class="mb-1">
+                            <t t-esc="equipment.elevator_number or equipment.name"/>
+                        </h2>
+                        <p class="text-muted">
+                            <t t-esc="equipment.elevator_type_id.name or ''"/>
+                            <span t-if="equipment.manufacturing_number">
+                                — tillv.nr <t t-esc="equipment.manufacturing_number"/>
+                            </span>
+                        </p>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <h5>Identitet</h5>
+                                <table class="table table-sm table-borderless">
+                                    <tr><td style="width:45%">Hissnummer</td>
+                                        <td><t t-esc="equipment.elevator_number or '–'"/></td></tr>
+                                    <tr><td>Tillverkningsnummer</td>
+                                        <td><t t-esc="equipment.manufacturing_number or '–'"/></td></tr>
+                                    <tr><td>Tillverkningsår</td>
+                                        <td><t t-esc="equipment.manufacturing_year or '–'"/></td></tr>
+                                    <tr><td>Antal stopp</td>
+                                        <td><t t-esc="equipment.number_of_stops or '–'"/></td></tr>
+                                    <tr><td>Drivtyp</td>
+                                        <td><t t-esc="dict(equipment._fields['drive_type'].selection).get(equipment.drive_type) or '–'"/></td></tr>
+                                    <tr><td>Styrsystem</td>
+                                        <td><t t-esc="equipment.control_system_id.name or '–'"/></td></tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <h5>Besiktning och drift</h5>
+                                <table class="table table-sm table-borderless">
+                                    <tr><td style="width:45%">Senaste besiktning</td>
+                                        <td><t t-esc="equipment.last_inspection_date or '–'"/></td></tr>
+                                    <tr><td>Nästa besiktning</td>
+                                        <td><t t-esc="equipment.next_inspection_date or '–'"/></td></tr>
+                                    <tr><td>Besiktningsorgan</td>
+                                        <td><t t-esc="equipment.inspection_company_id.name or '–'"/></td></tr>
+                                    <tr><td>Driftstatus</td>
+                                        <td>
+                                            <t t-esc="dict(equipment._fields['operational_status'].selection).get(equipment.operational_status)"/>
+                                        </td></tr>
+                                    <tr><td>Nödtelefon</td>
+                                        <td><t t-esc="equipment.emergency_phone_type_id.name or '–'"/></td></tr>
+                                    <tr><td>GSM</td>
+                                        <td><t t-esc="equipment.gsm_device_id.name or '–'"/></td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <t t-if="equipment.elevator_service_contract_id">
+                            <h5 class="mt-3">Serviceavtal</h5>
+                            <table class="table table-sm table-borderless">
+                                <tr>
+                                    <td style="width:22%">Avtal</td>
+                                    <td><t t-esc="equipment.elevator_service_contract_id.name"/></td>
+                                    <td style="width:22%">Omfattning</td>
+                                    <td>
+                                        <t t-esc="dict(equipment.elevator_service_contract_id._fields['coverage'].selection).get(equipment.elevator_service_contract_id.coverage)"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Besök per år</td>
+                                    <td><t t-esc="equipment.elevator_service_contract_id.visits_per_year"/></td>
+                                    <td>Responstid</td>
+                                    <td>
+                                        <t t-esc="equipment.elevator_service_contract_id.response_time_hours"/> h
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+
+                        <div class="mt-4 p-3" style="border:1px solid #ccc; border-radius:4px;">
+                            <strong>Fastighet</strong><br/>
+                            <t t-esc="equipment.partner_id.name or '–'"/><br/>
+                            <t t-esc="equipment.partner_id.street or ''"/>
+                            <t t-esc="equipment.partner_id.city or ''"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- ================================================================
+         Report actions
+         ================================================================ -->
+    <record id="action_report_inspection_protocol" model="ir.actions.report">
+        <field name="name">Besiktningsprotokoll</field>
+        <field name="model">maintenance.equipment.inspection</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">elevator_report.report_inspection_protocol</field>
+        <field name="report_file">elevator_report.report_inspection_protocol</field>
+        <field name="print_report_name">'Besiktningsprotokoll-%s' % (object.name.replace('/', '-'))</field>
+        <field name="binding_model_id" ref="maintenance_equipment_inspection.model_maintenance_equipment_inspection"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_service_order" model="ir.actions.report">
+        <field name="name">Servicerapport</field>
+        <field name="model">fieldservice.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">elevator_report.report_service_order</field>
+        <field name="report_file">elevator_report.report_service_order</field>
+        <field name="print_report_name">'Servicerapport-%s' % (object.name.replace('/', '-'))</field>
+        <field name="binding_model_id" ref="fieldservice_vrtl.model_fieldservice_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="action_report_elevator_sheet" model="ir.actions.report">
+        <field name="name">Hisskort</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">elevator_report.report_elevator_sheet</field>
+        <field name="report_file">elevator_report.report_elevator_sheet</field>
+        <field name="print_report_name">'Hisskort-%s' % (object.elevator_number or object.name)</field>
+        <field name="binding_model_id" ref="maintenance.model_maintenance_equipment"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</odoo>
