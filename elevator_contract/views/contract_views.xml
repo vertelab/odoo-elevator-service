@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================
+         Service agreement fields on the contract form.
+
+         Anchored on //notebook and //group, not on named fields from
+         contract: OCA modules extend this form and may move them.
+         ================================================================ -->
+    <record id="contract_contract_form_elevator" model="ir.ui.view">
+        <field name="name">contract.contract.form.elevator</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_customer_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Elevator Service" name="elevator_service"
+                      invisible="not is_elevator_contract">
+                    <group>
+                        <group string="Elevator">
+                            <field name="is_elevator_contract" invisible="1"/>
+                            <field name="equipment_id"
+                                   options="{'no_create': True}"/>
+                            <field name="coverage"/>
+                        </group>
+                        <group string="Service Level">
+                            <field name="visits_per_year"/>
+                            <field name="response_time_hours"/>
+                            <field name="includes_inspection"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- The elevator next to the customer, so the form reads as
+                 "this agreement, for this elevator". -->
+            <xpath expr="//group" position="inside">
+                <group string="Elevator" invisible="not is_elevator_contract">
+                    <field name="is_elevator_contract" invisible="1"/>
+                    <field name="equipment_id" options="{'no_create': True}"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- List: which elevator, how often, how fast. -->
+    <record id="contract_contract_list_elevator" model="ir.ui.view">
+        <field name="name">contract.contract.list.elevator</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_tree_view"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="equipment_id" optional="show"/>
+                <field name="visits_per_year" optional="show"/>
+                <field name="response_time_hours" optional="hide"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Search: find agreements by elevator, and filter on coverage. -->
+    <record id="contract_contract_search_elevator" model="ir.ui.view">
+        <field name="name">contract.contract.search.elevator</field>
+        <field name="model">contract.contract</field>
+        <field name="inherit_id" ref="contract.contract_contract_search_view"/>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="equipment_id"/>
+            </field>
+            <filter name="inactive" position="before">
+                <filter name="filter_elevator_contracts" string="Elevator Agreements"
+                        domain="[('is_elevator_contract', '=', True)]"/>
+                <filter name="filter_full_service" string="Full Service"
+                        domain="[('coverage', '=', 'full')]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Agreement list, filtered. -->
+    <record id="action_elevator_contracts" model="ir.actions.act_window">
+        <field name="name">Service Agreements</field>
+        <field name="res_model">contract.contract</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_elevator_contract', '=', True)]</field>
+        <field name="context">{'default_is_elevator_contract': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first service agreement
+            </p>
+            <p>
+                An agreement covers one elevator. Visits per year and the
+                response time are what the customer is paying for; the
+                invoicing comes from the contract itself.
+            </p>
+        </field>
+    </record>
+
+</odoo>

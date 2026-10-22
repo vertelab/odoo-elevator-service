@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_elevator_contracts"
+              name="Service Agreements"
+              parent="elevator_base.menu_elevator_root"
+              action="action_elevator_contracts"
+              sequence="30"/>
+
+</odoo>
