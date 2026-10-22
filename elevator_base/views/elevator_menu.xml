@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================
+         Elevator types, control systems and door types.
+
+         These are configuration, not data entry: a service company picks
+         from a list, it does not invent a type per elevator.
+         ================================================================ -->
+
+    <record id="action_elevator_type" model="ir.actions.act_window">
+        <field name="name">Elevator Types</field>
+        <field name="res_model">elevator.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_elevator_control_system" model="ir.actions.act_window">
+        <field name="name">Control Systems</field>
+        <field name="res_model">elevator.control.system</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_elevator_door_type" model="ir.actions.act_window">
+        <field name="name">Door Types</field>
+        <field name="res_model">elevator.door.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Elevators: the equipment list, filtered. -->
+    <record id="action_elevators" model="ir.actions.act_window">
+        <field name="name">Elevators</field>
+        <field name="res_model">maintenance.equipment</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('is_elevator', '=', True)]</field>
+        <field name="context">{'default_is_elevator': True}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Register your first elevator
+            </p>
+            <p>
+                An elevator is a maintenance asset with an inspection history.
+                The inspection date is what decides whether it may be in
+                service.
+            </p>
+        </field>
+    </record>
+
+    <!-- ================================================================
+         Menu, under Maintenance: an elevator is an asset, so it belongs
+         where the other assets are.
+         ================================================================ -->
+    <menuitem id="menu_elevator_root"
+              name="Elevators"
+              parent="maintenance.menu_maintenance_title"
+              sequence="5"/>
+
+    <menuitem id="menu_elevators"
+              name="Elevators"
+              parent="menu_elevator_root"
+              action="action_elevators"
+              sequence="10"/>
+
+    <menuitem id="menu_elevator_config"
+              name="Configuration"
+              parent="menu_elevator_root"
+              sequence="90"/>
+
+    <menuitem id="menu_elevator_type"
+              name="Elevator Types"
+              parent="menu_elevator_config"
+              action="action_elevator_type"
+              sequence="10"/>
+
+    <menuitem id="menu_elevator_control_system"
+              name="Control Systems"
+              parent="menu_elevator_config"
+              action="action_elevator_control_system"
+              sequence="20"/>
+
+    <menuitem id="menu_elevator_door_type"
+              name="Door Types"
+              parent="menu_elevator_config"
+              action="action_elevator_door_type"
+              sequence="30"/>
+
+</odoo>

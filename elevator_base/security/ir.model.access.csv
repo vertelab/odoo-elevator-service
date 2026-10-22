@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_elevator_type_user,elevator.type.user,model_elevator_type,base.group_user,1,1,1,1
+access_elevator_control_system_user,elevator.control.system.user,model_elevator_control_system,base.group_user,1,1,1,1
+access_elevator_door_type_user,elevator.door.type.user,model_elevator_door_type,base.group_user,1,1,1,1

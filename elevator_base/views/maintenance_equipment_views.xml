@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ================================================================
+         Elevator fields on the equipment form.
+
+         Anchored on //notebook, not on a named page: maintenance_elevator,
+         elevata_fsm_flow and elevata_media all extend this form, and
+         anchoring on a page another module owns is how views break.
+         ================================================================ -->
+    <record id="maintenance_equipment_form_elevator" model="ir.ui.view">
+        <field name="name">maintenance.equipment.form.elevator</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_set_operational" type="object"
+                            string="Set In Service" class="btn-primary"
+                            invisible="operational_status == 'operational' or not is_elevator"/>
+                    <button name="action_set_out_of_order" type="object"
+                            string="Take Out of Service" class="btn-danger"
+                            invisible="operational_status == 'out_of_order' or not is_elevator"/>
+                    <field name="lifecycle_stage" widget="statusbar"
+                           statusbar_visible="ok,inspection_due,service_due,out_of_service"
+                           invisible="not is_elevator"/>
+                </header>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Elevator" name="elevator"
+                      invisible="not is_elevator">
+                    <group>
+                        <group string="Identity">
+                            <field name="is_elevator" invisible="1"/>
+                            <field name="elevator_number"/>
+                            <field name="manufacturing_number"/>
+                            <field name="manufacturing_year"/>
+                            <field name="number_of_stops"/>
+                        </group>
+                        <group string="Technical">
+                            <field name="elevator_type_id"
+                                   options="{'no_create': True}"/>
+                            <field name="drive_type"/>
+                            <field name="control_system_id"
+                                   options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Doors">
+                            <field name="car_door_type_id"
+                                   options="{'no_create': True}"/>
+                            <field name="shaft_door_type_id"
+                                   options="{'no_create': True}"/>
+                        </group>
+                        <group string="Service">
+                            <field name="service_interval_months"/>
+                            <field name="last_service_date"/>
+                            <field name="next_service_date"/>
+                        </group>
+                    </group>
+                </page>
+
+                <page string="Inspection" name="inspection"
+                      invisible="not is_elevator">
+                    <group>
+                        <group string="Statutory Inspection">
+                            <field name="last_inspection"/>
+                            <field name="next_inspection_date"/>
+                            <field name="inspection_company_id"
+                                   options="{'no_create': True}"/>
+                            <field name="inspection_number"/>
+                        </group>
+                        <group string="Result">
+                            <field name="inspection_remark"/>
+                            <field name="authorisation_scheme"/>
+                            <field name="authorised_partner_id"
+                                   options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                </page>
+
+                <page string="Operational" name="operational"
+                      invisible="not is_elevator">
+                    <group>
+                        <group>
+                            <field name="operational_status"/>
+                            <field name="out_of_order_date"
+                                   invisible="not out_of_order_date"/>
+                        </group>
+                        <group>
+                            <field name="out_of_order_reason"
+                                   invisible="not out_of_order_reason"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Elevator number next to the name, so the list and the form
+                 agree on what identifies the record. -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_elevator" invisible="1"/>
+                <field name="elevator_number" invisible="not is_elevator"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- List: the columns a service planner needs. -->
+    <record id="maintenance_equipment_list_elevator" model="ir.ui.view">
+        <field name="name">maintenance.equipment.list.elevator</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="elevator_number" optional="show"/>
+                <field name="elevator_type_id" optional="show"/>
+                <field name="next_inspection_date" optional="show"/>
+                <field name="lifecycle_stage" widget="badge"
+                       decoration-success="lifecycle_stage == 'ok'"
+                       decoration-warning="lifecycle_stage in ('inspection_due', 'service_due')"
+                       decoration-danger="lifecycle_stage in ('inspection_overdue', 'out_of_service')"
+                       optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Search: find by elevator number, and filter on what needs doing. -->
+    <record id="maintenance_equipment_search_elevator" model="ir.ui.view">
+        <field name="name">maintenance.equipment.search.elevator</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="elevator_number"/>
+                <field name="manufacturing_number"/>
+            </field>
+            <filter name="inactive" position="before">
+                <filter name="filter_elevators" string="Elevators"
+                        domain="[('is_elevator', '=', True)]"/>
+                <filter name="filter_inspection_overdue" string="Inspection Overdue"
+                        domain="[('lifecycle_stage', '=', 'inspection_overdue')]"/>
+                <filter name="filter_out_of_service" string="Out of Service"
+                        domain="[('lifecycle_stage', '=', 'out_of_service')]"/>
+                <separator/>
+            </filter>
+            <filter name="under_maintenance" position="after">
+                <separator/>
+                <filter name="group_by_elevator_type" string="Elevator Type"
+                        context="{'group_by': 'elevator_type_id'}"/>
+                <filter name="group_by_lifecycle" string="Lifecycle"
+                        context="{'group_by': 'lifecycle_stage'}"/>
+            </filter>
+        </field>
+    </record>
+
+</odoo>

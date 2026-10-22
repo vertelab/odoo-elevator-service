@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- Elevator types. The set is the one the inspection scheme uses,
+         so a checklist can be picked by type without a free-text field. -->
+    <record id="elevator_type_traction" model="elevator.type">
+        <field name="name">Traction Elevator</field>
+        <field name="code">TRACTION</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="elevator_type_hydraulic" model="elevator.type">
+        <field name="name">Hydraulic Elevator</field>
+        <field name="code">HYDRAULIC</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="elevator_type_mrl" model="elevator.type">
+        <field name="name">Machine Room Less</field>
+        <field name="code">MRL</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="elevator_type_screw" model="elevator.type">
+        <field name="name">Screw Drive Elevator</field>
+        <field name="code">SCREW</field>
+        <field name="sequence">40</field>
+    </record>
+    <record id="elevator_type_stair_lift" model="elevator.type">
+        <field name="name">Stair Lift</field>
+        <field name="code">STAIRLIFT</field>
+        <field name="sequence">50</field>
+    </record>
+    <record id="elevator_type_goods" model="elevator.type">
+        <field name="name">Goods Elevator</field>
+        <field name="code">GOODS</field>
+        <field name="sequence">60</field>
+    </record>
+    <record id="elevator_type_lifting_table" model="elevator.type">
+        <field name="name">Lifting Table</field>
+        <field name="code">TABLE</field>
+        <field name="sequence">70</field>
+    </record>
+    <record id="elevator_type_door" model="elevator.type">
+        <field name="name">Automatic Door</field>
+        <field name="code">DOOR</field>
+        <field name="sequence">80</field>
+    </record>
+    <record id="elevator_type_gate" model="elevator.type">
+        <field name="name">Gate</field>
+        <field name="code">GATE</field>
+        <field name="sequence">90</field>
+    </record>
+
+</odoo>
