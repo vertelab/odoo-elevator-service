@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ================================================================
+         Elevator legislation.
+
+         Short records: name, code, what it requires, where to read it.
+         The full text belongs at the authority — copying it into Odoo
+         would go stale the first time a regulation is amended.
+
+         noupdate="1" so a customer who edits a description keeps their
+         edit; the records are a starting point, not a fixture.
+         ================================================================ -->
+
+    <record id="law_pbl" model="document.law">
+        <field name="rss_titel">PBL — Plan- och bygglagen (2010:900)</field>
+        <field name="rss_beteckning">SFS 2010:900</field>
+        <field name="rss_text">Reglerar planläggning av mark och vatten samt byggande. Hissar omfattas genom att de är byggnadsverk: installation, ändring och rivning kräver bygglov eller anmälan enligt 9 kap. Kontroll av hissar regleras vidare i BFS.</field>
+        <field name="rss_dokumentnamn">https://www.riksdagen.se/sv/dokument-och-lagar/dokument/svensk-forfattningssamling/plan--och-bygglag-2010900_sfs-2010-900/</field>
+    </record>
+
+    <record id="law_bbr" model="document.law">
+        <field name="rss_titel">BBR — Boverkets byggregler, avsnitt 5 (Hissar)</field>
+        <field name="rss_beteckning">BBR 29</field>
+        <field name="rss_text">Boverkets byggregler avsnitt 5 reglerar hissar och andra lyftanordningar: säkerhetskrav, utrymningsvägar, tillgänglighet. Anger bland annat att hiss ska vara besiktigad innan den tas i bruk och därefter återkommande.</field>
+        <field name="rss_dokumentnamn">https://www.boverket.se/sv/byggande/regler-for-byggande/om-boverkets-byggregler-bbr/</field>
+    </record>
+
+    <record id="law_bfs_2011_12" model="document.law">
+        <field name="rss_titel">BFS 2011:12 — Hissar (auktorisation, besiktning, service)</field>
+        <field name="rss_beteckning">BFS 2011:12</field>
+        <field name="rss_text">Boverkets föreskrifter om hissar och andra lyftanordningar. Reglerar auktorisation av serviceföretag, besiktningsorganens verksamhet, besiktningsintervall och vad som ska gälla när en hiss tas ur drift. En hiss får inte användas om den har en anmärkning som innebär påtaglig fara.</field>
+        <field name="rss_dokumentnamn">https://www.boverket.se/sv/lag--ratt/forfattningssamling/gallande/bfs-201112/</field>
+    </record>
+
+    <record id="law_afs_2023_1" model="document.law">
+        <field name="rss_titel">AFS 2023:1 — Systematiskt arbetsmiljöarbete</field>
+        <field name="rss_beteckning">AFS 2023:1</field>
+        <field name="rss_text">Arbetsmiljöverkets föreskrifter om systematiskt arbetsmiljöarbete. Arbetsgivaren ska undersöka, riskbedöma, åtgärda och följa upp arbetsmiljön löpande. Från tio anställda ska arbetet dokumenteras skriftligt.</field>
+        <field name="rss_dokumentnamn">https://www.av.se/arbetsmiljoarbete-och-inspektioner/publikationer/foreskrifter/afs-2023-1/</field>
+    </record>
+
+    <record id="law_afs_2001_1" model="document.law">
+        <field name="rss_titel">AFS 2001:1 — Systematiskt arbetsmiljöarbete (ersatt av AFS 2023:1)</field>
+        <field name="rss_beteckning">AFS 2001:1</field>
+        <field name="rss_text">Den tidigare föreskriften om systematiskt arbetsmiljöarbete. Ersatt av AFS 2023:1 men finns kvar som referens i avtal och besiktningsprotokoll som skrevs före bytet.</field>
+        <field name="rss_dokumentnamn">https://www.av.se/arbetsmiljoarbete-och-inspektioner/publikationer/foreskrifter/</field>
+    </record>
+
+    <record id="law_afs_2006_4" model="document.law">
+        <field name="rss_titel">AFS 2006:4 — Användning av arbetsutrustning (Heta arbeten)</field>
+        <field name="rss_beteckning">AFS 2006:4</field>
+        <field name="rss_text">Reglerar användning av arbetsutrustning, inklusive heta arbeten. Kräver att den som utför hetarbete har giltigt tillstånd enligt utbildningsschemat — i praktiken Heta arbeten med fem års giltighet.</field>
+        <field name="rss_dokumentnamn">https://www.av.se/arbetsmiljoarbete-och-inspektioner/publikationer/foreskrifter/</field>
+    </record>
+
+    <record id="law_afs_2023_10" model="document.law">
+        <field name="rss_titel">AFS 2023:10 — Organisatorisk och social arbetsmiljö (OSA)</field>
+        <field name="rss_beteckning">AFS 2023:10</field>
+        <field name="rss_text">Krav på organisatorisk och social arbetsmiljö: arbetsbelastning, arbetstider, kränkande särbehandling. Relevant för jour- och beredskapsarbete, som är vanligt i hissservice.</field>
+        <field name="rss_dokumentnamn">https://www.av.se/arbetsmiljoarbete-och-inspektioner/publikationer/foreskrifter/</field>
+    </record>
+
+    <record id="law_esa_2006_1" model="document.law">
+        <field name="rss_titel">ESA 2006:1 — Elsäkerhet vid arbete i hiss</field>
+        <field name="rss_beteckning">ESA 2006:1</field>
+        <field name="rss_text">Elsäkerhetsverkets föreskrifter om elsäkerhet vid arbete i hissar och andra lyftanordningar. Kräver att den som arbetar i hiss har dokumenterad elsäkerhetsutbildning.</field>
+        <field name="rss_dokumentnamn">https://www.elsakerhetsverket.se/om-oss/publikationer/foreskrifter/</field>
+    </record>
+
+    <record id="law_maskindirektivet" model="document.law">
+        <field name="rss_titel">Maskindirektivet 2006/42/EG</field>
+        <field name="rss_beteckning">2006/42/EG</field>
+        <field name="rss_text">EU-direktiv om maskiner. Hissar som inte är byggnadsverk omfattas, liksom maskindelar i hissar. Kräver CE-märkning och teknisk dokumentation.</field>
+        <field name="rss_dokumentnamn">https://eur-lex.europa.eu/legal-content/SV/TXT/?uri=CELEX:32006L0042</field>
+    </record>
+
+</odoo>

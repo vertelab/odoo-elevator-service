@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ================================================================
+         Elevator certifications.
+
+         One skill type holds them all, so the CV shows a single
+         "Hisscertifiering" block instead of eight separate ones. The
+         statutory validity sits on the level, which is where Odoo reads it
+         for expiration_status.
+         ================================================================ -->
+
+    <record id="skill_type_elevator" model="hr.skill.type">
+        <field name="name">Hisscertifiering</field>
+    </record>
+
+    <record id="skill_level_certified" model="hr.skill.level">
+        <field name="name">Certifierad</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+        <field name="level_progress">100</field>
+        <field name="default_level" eval="True"/>
+    </record>
+
+    <!-- ── Auktorisation ────────────────────────────────────────────────
+         The one that makes the company allowed to service elevators at
+         all. Follows the auktorisation, so no fixed expiry. -->
+    <record id="skill_hissinstallation" model="hr.skill">
+        <field name="name">Hissinstallation (auktorisation)</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+    <!-- ── Elsäkerhet ───────────────────────────────────────────────────
+         ESA 2006:1. Five years is what the training schemes issue. -->
+    <record id="skill_elsakerhet" model="hr.skill">
+        <field name="name">Elsäkerhet</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+    <!-- ── Heta arbeten ─────────────────────────────────────────────────
+         AFS 2006:4. Five years, and the certificate number matters: the
+         insurance company asks for it after a fire. -->
+    <record id="skill_heta_arbeten" model="hr.skill">
+        <field name="name">Heta arbeten</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+    <!-- ── Fallskydd ────────────────────────────────────────────────────
+         AFS 2001:1. Two years — the shortest of the set, and the one most
+         often allowed to lapse. -->
+    <record id="skill_fallskydd" model="hr.skill">
+        <field name="name">Fallskydd / Höjdarbete</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+    <record id="skill_forsta_hjalpen" model="hr.skill">
+        <field name="name">Första hjälpen / HLR</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+    <record id="skill_truckkort" model="hr.skill">
+        <field name="name">Truckkort</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+    <record id="skill_tunga_lyft" model="hr.skill">
+        <field name="name">Tunga lyft</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+    <record id="skill_sakerhetsutbildning" model="hr.skill">
+        <field name="name">Säkerhetsutbildning</field>
+        <field name="skill_type_id" ref="skill_type_elevator"/>
+    </record>
+
+</odoo>
