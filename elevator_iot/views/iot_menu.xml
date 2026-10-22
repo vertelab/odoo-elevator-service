@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The sensor model and views live in maintenance_iot. This only puts
+         the entry where an elevator company looks for it. -->
+    <menuitem id="menu_elevator_sensors"
+              name="Sensors"
+              parent="elevator_base.menu_elevator_root"
+              action="maintenance_iot.action_maintenance_sensors"
+              sequence="27"/>
+</odoo>

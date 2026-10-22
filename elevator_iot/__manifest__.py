@@ -4,7 +4,7 @@
 {
     'website': 'https://vertel.se/apps/odoo-elevator-service/elevator_iot',
     'name': 'Elevator IoT — Hissövervakning',
-    'version': '18.0.1.0.2',
+    'version': '18.0.1.0.3',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'license': 'AGPL-3',
@@ -52,14 +52,13 @@ Elevator IoT — Hissövervakning
     'category': 'Elevator Service',
     'depends': [
         'elevator_base',
-        'fieldservice_vrtl',
-        'mail',
+        # Sensors on an asset are generic: maintenance_iot owns the model,
+        # the thresholds and the alarm-to-request logic. This module adds
+        # what is specific to elevator monitoring.
+        'maintenance_iot',
     ],
     'data': [
-        'security/ir.model.access.csv',
-        'views/elevator_sensor_views.xml',
-        'views/maintenance_equipment_views.xml',
-        'views/elevator_menu.xml',
+        'views/iot_menu.xml',
     ],
     'application': False,
     'installable': True,

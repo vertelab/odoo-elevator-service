@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- The map view and the planning actions live in fieldservice_route.
+         This only puts the entry where an elevator company looks for it. -->
+    <menuitem id="menu_elevator_route_map"
+              name="Route Map"
+              parent="elevator_base.menu_elevator_root"
+              action="fieldservice_route.action_fsm_order_route_map"
+              sequence="25"/>
+</odoo>

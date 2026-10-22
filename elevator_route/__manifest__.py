@@ -4,7 +4,7 @@
 {
     'website': 'https://vertel.se/apps/odoo-elevator-service/elevator_route',
     'name': 'Elevator Route — Ruttplanering',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'license': 'AGPL-3',
@@ -51,13 +51,13 @@ Elevator Route — Ruttplanering
     'depends': [
         'elevator_base',
         'elevator_contract',
-        'fieldservice_vrtl',
-        'web_map_ce',
+        # Routing is generic: the sequence, the ETA and the map view apply to
+        # any field service. fieldservice_route owns it; this module only
+        # keeps the elevator menu entry.
+        'fieldservice_route',
     ],
     'data': [
-        'security/ir.model.access.csv',
-        'views/fieldservice_order_views.xml',
-        'views/route_views.xml',
+        'views/route_menu.xml',
     ],
     'application': False,
     'installable': True,
