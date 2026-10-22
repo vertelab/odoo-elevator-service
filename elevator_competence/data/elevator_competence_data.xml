@@ -18,23 +18,12 @@
          technician can be checked against it.
          ================================================================ -->
 
-    <record id="skill_set_elevator_technician" model="hr.skill.type">
-        <field name="name">Hissmontör — baskrav</field>
-    </record>
-
-    <record id="skill_level_elevator_technician" model="hr.skill.level">
-        <field name="name">Godkänd</field>
-        <field name="skill_type_id" ref="skill_set_elevator_technician"/>
-        <field name="level_progress">100</field>
-        <field name="default_level" eval="True"/>
-    </record>
-
     <!-- The baseline every elevator technician must hold. The individual
          skills come from the odoo-hr bridges; this is the bundle that says
          "these together make a technician". -->
     <record id="skill_elevator_baseline" model="hr.skill">
         <field name="name">Baskrav hissmontör</field>
-        <field name="skill_type_id" ref="skill_set_elevator_technician"/>
+        <field name="skill_type_id" ref="hr_certificate_hiss.skill_type_hiss"/>
     </record>
 
 </odoo>
