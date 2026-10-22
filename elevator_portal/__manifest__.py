@@ -4,7 +4,7 @@
 {
     'website': 'https://vertel.se/apps/odoo-elevator-service/elevator_portal',
     'name': 'Elevator Portal — Kundportal',
-    'version': '18.0.1.0.1',
+    'version': '18.0.1.0.2',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'license': 'AGPL-3',
@@ -56,8 +56,10 @@ Elevator Portal — Kundportal
         'elevator_base',
         'elevator_inspection',
         'elevator_contract',
-        'fieldservice_vrtl',
-        'portal',
+        # The portal, the fault report and the QR token are generic:
+        # fieldservice_portal owns them. This module adds the elevator
+        # parts — inspection history, agreement, and the protocol PDF.
+        'fieldservice_portal',
     ],
     'data': [
         'security/ir.model.access.csv',
