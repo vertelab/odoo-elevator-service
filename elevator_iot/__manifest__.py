@@ -4,7 +4,7 @@
 {
     'website': 'https://vertel.se/apps/odoo-elevator-service/elevator_iot',
     'name': 'Elevator IoT — Hissövervakning',
-    'version': '18.0.1.0.3',
+    'version': '18.0.1.0.4',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'license': 'AGPL-3',
