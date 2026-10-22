@@ -55,7 +55,13 @@ Elevator Competence — Hisscertifieringar
     'category': 'Elevator Service',
     'depends': [
         'elevator_base',
-        'hr_skills_certificate',
+        # The certifications themselves live in odoo-hr as industry
+        # bridges, so a company that already installs them for other
+        # reasons does not get a second copy. This module only adds what is
+        # specific to elevator service.
+        'hr_certificate_hiss',
+        'hr_certificate_esa',
+        'hr_certificate_arbetsmiljo',
     ],
     'data': [
         'security/ir.model.access.csv',

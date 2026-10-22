@@ -2,74 +2,39 @@
 <odoo noupdate="1">
 
     <!-- ================================================================
-         Elevator certifications.
+         Elevator-specific competence links.
 
-         One skill type holds them all, so the CV shows a single
-         "Hisscertifiering" block instead of eight separate ones. The
-         statutory validity sits on the level, which is where Odoo reads it
-         for expiration_status.
+         The certifications themselves are seeded by the odoo-hr bridges:
+
+             hr_certificate_hiss       Hissinstallation, Hissbesiktning,
+                                       Hisservice — felsökning
+             hr_certificate_esa        Elsäkerhet, Arbete i elanläggning,
+                                       Elsäkerhet vid arbete i hiss
+             hr_certificate_arbetsmiljo Heta arbeten, Fallskydd,
+                                       Säkerhetsutbildning, Tunga lyft, OSA
+
+         This module does not duplicate them. What it adds is the set an
+         elevator technician needs, so a job position can require it and a
+         technician can be checked against it.
          ================================================================ -->
 
-    <record id="skill_type_elevator" model="hr.skill.type">
-        <field name="name">Hisscertifiering</field>
+    <record id="skill_set_elevator_technician" model="hr.skill.type">
+        <field name="name">Hissmontör — baskrav</field>
     </record>
 
-    <record id="skill_level_certified" model="hr.skill.level">
-        <field name="name">Certifierad</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
+    <record id="skill_level_elevator_technician" model="hr.skill.level">
+        <field name="name">Godkänd</field>
+        <field name="skill_type_id" ref="skill_set_elevator_technician"/>
         <field name="level_progress">100</field>
         <field name="default_level" eval="True"/>
     </record>
 
-    <!-- ── Auktorisation ────────────────────────────────────────────────
-         The one that makes the company allowed to service elevators at
-         all. Follows the auktorisation, so no fixed expiry. -->
-    <record id="skill_hissinstallation" model="hr.skill">
-        <field name="name">Hissinstallation (auktorisation)</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
-    </record>
-
-    <!-- ── Elsäkerhet ───────────────────────────────────────────────────
-         ESA 2006:1. Five years is what the training schemes issue. -->
-    <record id="skill_elsakerhet" model="hr.skill">
-        <field name="name">Elsäkerhet</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
-    </record>
-
-    <!-- ── Heta arbeten ─────────────────────────────────────────────────
-         AFS 2006:4. Five years, and the certificate number matters: the
-         insurance company asks for it after a fire. -->
-    <record id="skill_heta_arbeten" model="hr.skill">
-        <field name="name">Heta arbeten</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
-    </record>
-
-    <!-- ── Fallskydd ────────────────────────────────────────────────────
-         AFS 2001:1. Two years — the shortest of the set, and the one most
-         often allowed to lapse. -->
-    <record id="skill_fallskydd" model="hr.skill">
-        <field name="name">Fallskydd / Höjdarbete</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
-    </record>
-
-    <record id="skill_forsta_hjalpen" model="hr.skill">
-        <field name="name">Första hjälpen / HLR</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
-    </record>
-
-    <record id="skill_truckkort" model="hr.skill">
-        <field name="name">Truckkort</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
-    </record>
-
-    <record id="skill_tunga_lyft" model="hr.skill">
-        <field name="name">Tunga lyft</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
-    </record>
-
-    <record id="skill_sakerhetsutbildning" model="hr.skill">
-        <field name="name">Säkerhetsutbildning</field>
-        <field name="skill_type_id" ref="skill_type_elevator"/>
+    <!-- The baseline every elevator technician must hold. The individual
+         skills come from the odoo-hr bridges; this is the bundle that says
+         "these together make a technician". -->
+    <record id="skill_elevator_baseline" model="hr.skill">
+        <field name="name">Baskrav hissmontör</field>
+        <field name="skill_type_id" ref="skill_set_elevator_technician"/>
     </record>
 
 </odoo>
