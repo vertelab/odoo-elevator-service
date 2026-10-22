@@ -4,7 +4,7 @@
 {
     'website': 'https://vertel.se/apps/odoo-elevator-service/elevator_report',
     'name': 'Elevator Report — Brandade rapporter',
-    'version': '18.0.1.0.1',
+    'version': '18.0.1.0.2',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'license': 'AGPL-3',
@@ -49,7 +49,10 @@ Elevator Report — Brandade rapporter
         'elevator_inspection',
         'elevator_contract',
         'elevator_portal',
-        'fieldservice_vrtl',
+        # The service report is generic: what the technician did, the
+        # checklist, the customer's signature. fieldservice_report owns it;
+        # this module adds the protocol and the elevator sheet.
+        'fieldservice_report',
     ],
     'data': [
         'security/ir.model.access.csv',
