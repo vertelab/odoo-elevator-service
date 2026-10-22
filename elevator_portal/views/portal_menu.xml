@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Portal home: a counter for the customer's elevators. -->
+    <template id="portal_my_home_elevators" name="Portal: Elevators"
+              inherit_id="portal.portal_my_home" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/web/static/img/file-text.svg'"/>
+                <t t-set="title">Mina hissar</t>
+                <t t-set="text">Status, besiktningar och felanmälan</t>
+                <t t-set="url" t-value="'/my/equipment'"/>
+                <t t-set="count_text" t-value="elevator_count"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- QR code on the elevator form, so the sticker can be printed. -->
+    <record id="maintenance_equipment_form_portal" model="ir.ui.view">
+        <field name="name">maintenance.equipment.form.portal</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Portal" name="portal" invisible="not is_elevator">
+                    <group>
+                        <group string="QR Code">
+                            <field name="portal_token" readonly="1"/>
+                            <field name="portal_report_url" widget="url" readonly="1"/>
+                        </group>
+                        <group>
+                            <button name="action_generate_portal_token" type="object"
+                                    string="Issue New Token" class="btn-secondary"
+                                    help="Invalidates every printed QR sticker for this elevator."/>
+                        </group>
+                    </group>
+                    <div class="text-muted">
+                        The QR code opens the fault report for this elevator
+                        without login. The token identifies the elevator, not
+                        the person, and cannot be used to read anything else.
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
