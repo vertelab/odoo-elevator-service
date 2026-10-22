@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_elevator_sensors"
+              name="Sensors"
+              parent="elevator_base.menu_elevator_root"
+              action="action_elevator_sensors"
+              sequence="27"/>
+</odoo>

@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_elevator_sensor_user,elevator.sensor.user,model_elevator_sensor,base.group_user,1,1,1,1
+access_elevator_sensor_reading_user,elevator.sensor.reading.user,model_elevator_sensor_reading,base.group_user,1,1,1,1
