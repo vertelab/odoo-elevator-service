@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <!-- ================================================================
+         AI coworkers for elevator service.
+
+         Both deliver proposals, never decisions. An inspection remark that
+         takes an elevator out of service is a legal act, and a technician's
+         diagnosis is a professional judgement — the AI drafts, the human
+         decides. hitl_threshold is 'always' on both for that reason.
+         ================================================================ -->
+
+    <record id="ai_coworker_elevator_analyst" model="ai.coworker">
+        <field name="name">Hissanalytiker</field>
+        <field name="sub_description">Analys av besiktningshistorik och sensordata</field>
+        <field name="description">
+Du är en hissanalytiker med kunskap om BFS 2011:12 och hissteknik.
+
+Analysera hissens besiktningshistorik och sensordata. Leta efter mönster:
+återkommande anmärkningar på samma komponent, stigande dörrcykler,
+temperaturtrender, besiktningar som närmar sig.
+
+Svara i JSON:
+{
+    "risk_level": "low|medium|high|critical",
+    "summary": "&lt;kort sammanfattning&gt;",
+    "patterns": ["&lt;mönster du ser&gt;"],
+    "recommendations": ["&lt;åtgärd 1&gt;", "&lt;åtgärd 2&gt;"]
+}
+
+HITL-policy: analysen är ett förslag. Beslut om åtgärder — särskilt
+avställning — tas av behörig besiktningsman eller serviceansvarig.
+        </field>
+        <field name="status">active</field>
+        <field name="init_type" eval="'manual'"/>
+        <field name="model_ids" eval="[(6, 0, [
+            ref('maintenance.model_maintenance_equipment'),
+        ])]"/>
+        <field name="filter_domain">[('is_elevator', '=', True)]</field>
+        <field name="injection_level">summary_and_key</field>
+        <field name="hitl_threshold">always</field>
+        <field name="orchestration_mode">single</field>
+        <field name="example_prompts">
+Analysera besiktningshistoriken för den här hissen. Finns återkommande anmärkningar?
+Vilka sensorvärden avviker?
+        </field>
+    </record>
+
+    <record id="ai_coworker_fault_triage" model="ai.coworker">
+        <field name="name">Felavhjälpning</field>
+        <field name="sub_description">Diagnosförslag på felanmälan</field>
+        <field name="description">
+Du är en erfaren hisstekniker. Läs felanmälan och föreslå en diagnos.
+
+Utgå från beskrivningen och hissens kända skick. Föreslå vad som sannolikt
+är fel, vilka delar som kan behövas, och vad teknikern ska kontrollera först.
+
+Svara i JSON:
+{
+    "likely_cause": "&lt;sannolik orsak&gt;",
+    "confidence": "low|medium|high",
+    "first_checks": ["&lt;kontroll 1&gt;", "&lt;kontroll 2&gt;"],
+    "possible_parts": ["&lt;del 1&gt;"],
+    "urgency": "normal|urgent|critical"
+}
+
+urgency=critical om någon kan vara instängd eller hissen är i rörelse utan
+kontroll. Då ska svaret säga det först.
+
+HITL-policy: diagnosen är ett förslag. Teknikern bedömer på plats.
+        </field>
+        <field name="status">active</field>
+        <field name="init_type" eval="'manual'"/>
+        <field name="model_ids" eval="[(6, 0, [
+            ref('fieldservice_vrtl.model_fieldservice_order'),
+        ])]"/>
+        <field name="filter_domain">[('equipment_id.is_elevator', '=', True)]</field>
+        <field name="injection_level">summary_and_key</field>
+        <field name="hitl_threshold">always</field>
+        <field name="orchestration_mode">single</field>
+        <field name="example_prompts">
+Hissen står still mellan två plan. Vad är sannolikt fel och vad ska teknikern
+kontrollera först?
+        </field>
+    </record>
+
+</odoo>
