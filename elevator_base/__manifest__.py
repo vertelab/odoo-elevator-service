@@ -3,7 +3,7 @@
 
 {
     'name': 'Elevator Base',
-    'version': '18.0.1.0.0',
+    'version': '18.0.2.0.0',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'summary': 'Elevators — register, types, lifecycle, authorisation',
@@ -40,13 +40,10 @@
         'base',
         'mail',
         'maintenance',
-        'fieldservice_vrtl',
         'product',
     ],
     'data': [
         'security/ir.model.access.csv',
-        'data/elevator_type_data.xml',
-        'views/maintenance_equipment_views.xml',
         'views/elevator_type_views.xml',
         'views/elevator_menu.xml',
     ],

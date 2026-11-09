@@ -42,10 +42,10 @@ class MaintenanceEquipment(models.Model):
     number_of_stops = fields.Integer(string='Number of Stops')
 
     # ── Technical configuration ────────────────────────────────────────
-    elevator_type_id = fields.Many2one(
-        'elevator.type',
-        string='Elevator Type',
-    )
+    # elevator_type_id is owned by maintenance_elevator, which defines it
+    # against maintenance.elevator.type. Defining it here as well would
+    # create two fields with the same name on the same model; Odoo does not
+    # error, the later module wins silently.
     drive_type = fields.Selection(
         selection=[
             ('traction', 'Traction'),
@@ -149,7 +149,11 @@ class MaintenanceEquipment(models.Model):
         store=True,
         help='Derived from the inspection and service dates. An elevator '
              'past its inspection date is out of service by law, whatever '
-             'the operational status says.',
+             'the operational status says. This is NOT the same as '
+             'maintenance_elevator.elevator_status: that field is the '
+             'manual classification of where the elevator is in its life '
+             '(active, inactive, modernization, new installation), while '
+             'this one is computed from deadlines. Keep both.',
     )
 
     company_id = fields.Many2one(
@@ -219,19 +223,6 @@ class MaintenanceEquipment(models.Model):
                 'out_of_order_date': False,
             })
 
-
-class ElevatorType(models.Model):
-    """Elevator type — the classification used for checklists and pricing."""
-
-    _name = 'elevator.type'
-    _description = 'Elevator Type'
-    _order = 'sequence, name'
-
-    name = fields.Char(required=True, translate=True)
-    code = fields.Char()
-    sequence = fields.Integer(default=10)
-    description = fields.Text()
-    active = fields.Boolean(default=True)
 
 
 class ElevatorControlSystem(models.Model):
