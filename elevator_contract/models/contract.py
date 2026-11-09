@@ -191,3 +191,70 @@ class MaintenanceEquipment(models.Model):
                 'default_is_elevator_contract': True,
             },
         }
+
+
+class ProductTemplate(models.Model):
+    """Which contract template a product sells.
+
+    A service product is not just a price: selling it should create a
+    contract with the right recurrence, the right lines and the right
+    terms. OCA's contract.template already carries that, and
+    contract.contract.contract_template_id already fills a contract from
+    it. What is missing is the link from the product, so the salesperson
+    does not have to remember which template belongs to which service.
+    """
+
+    _inherit = 'product.template'
+
+    elevator_contract_template_id = fields.Many2one(
+        'contract.template',
+        string='Contract Template',
+        domain="[('contract_type', '=', 'sale')]",
+        help='The contract template this product creates when it is sold '
+             'as a service agreement. Leave empty for products that do not '
+             'sell a contract.',
+    )
+
+class SaleOrderLine(models.Model):
+    """Selling a service product creates the agreement.
+
+    The product names its contract template; confirming a sale order with
+    such a line creates the contract from it. This is where OCA's
+    contract.template actually pays off — the recurrence and the lines come
+    from the template, not from a second implementation.
+    """
+
+    _inherit = 'sale.order.line'
+
+    def _prepare_elevator_contract_vals(self):
+        """Contract values from the line and its template."""
+        self.ensure_one()
+        template = self.product_id.product_tmpl_id.elevator_contract_template_id
+        if not template:
+            return False
+        return {
+            'name': '%s - %s' % (self.order_id.name, self.product_id.name),
+            'partner_id': self.order_id.partner_id.id,
+            'company_id': self.order_id.company_id.id,
+            'contract_template_id': template.id,
+            'is_elevator_contract': True,
+        }
+
+    def _create_elevator_contract(self):
+        """Create the agreement for this line, once."""
+        self.ensure_one()
+        Contract = self.env['contract.contract']
+        existing = Contract.search([
+            ('name', '=', '%s - %s' % (self.order_id.name, self.product_id.name)),
+            ('partner_id', '=', self.order_id.partner_id.id),
+        ], limit=1)
+        if existing:
+            return existing
+        vals = self._prepare_elevator_contract_vals()
+        if not vals:
+            return False
+        contract = Contract.create(vals)
+        # The template's lines are copied by the onchange, which does not
+        # run on create. Replay it so the contract is not born empty.
+        contract._onchange_contract_template_id()
+        return contract

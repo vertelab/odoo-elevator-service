@@ -4,7 +4,7 @@
 {
     'website': 'https://vertel.se/apps/odoo-elevator-service/elevator_contract',
     'name': 'Elevator Contract — Serviceavtal',
-    'version': '18.0.1.0.6',
+    'version': '18.0.1.1.0',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'license': 'AGPL-3',
@@ -44,11 +44,15 @@ Elevator Contract — Serviceavtal
         'elevator_base',
         'contract',
         'maintenance',
+        # sale.order.line carries the product that names the template, and
+        # this module extends it. OCA's contract does not depend on sale.
+        'sale_management',
     ],
     'data': [
         'security/ir.model.access.csv',
         'views/contract_views.xml',
         'views/maintenance_equipment_views.xml',
+        'views/product_views.xml',
         'views/elevator_menu.xml',
     ],
     'application': False,

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Which contract template a service product sells.
+
+         On the product form, under the Sales tab: pick the template and
+         selling the product can create the agreement with the right
+         recurrence and lines, instead of the salesperson remembering. -->
+    <record id="product_template_form_view_elevator_contract" model="ir.ui.view">
+        <field name="name">product.template.form.elevator.contract</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']" position="inside">
+                <group string="Service Agreement" name="elevator_contract">
+                    <field name="elevator_contract_template_id"
+                           options="{'no_create': True}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
