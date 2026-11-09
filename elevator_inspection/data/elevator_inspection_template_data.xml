@@ -16,7 +16,7 @@
     <record id="template_traction" model="maintenance.inspection.template">
         <field name="name">BFS-besiktning — Linhiss</field>
         <field name="inspection_type">statutory</field>
-        <field name="elevator_type_id" ref="elevator_base.elevator_type_traction"/>
+        <field name="elevator_type_id" ref="maintenance_elevator.elevator_type_traction"/>
         <field name="interval_months">12</field>
         <field name="description">Årlig besiktning enligt BFS 2011:12 för linhiss.</field>
     </record>
@@ -73,7 +73,7 @@
     <record id="template_hydraulic" model="maintenance.inspection.template">
         <field name="name">BFS-besiktning — Hydraulhiss</field>
         <field name="inspection_type">statutory</field>
-        <field name="elevator_type_id" ref="elevator_base.elevator_type_hydraulic"/>
+        <field name="elevator_type_id" ref="maintenance_elevator.elevator_type_hydraulic"/>
         <field name="interval_months">12</field>
     </record>
     <record id="template_hydraulic_1" model="maintenance.inspection.template.line">
@@ -123,7 +123,7 @@
     <record id="template_mrl" model="maintenance.inspection.template">
         <field name="name">BFS-besiktning — Maskinrumslös</field>
         <field name="inspection_type">statutory</field>
-        <field name="elevator_type_id" ref="elevator_base.elevator_type_mrl"/>
+        <field name="elevator_type_id" ref="maintenance_elevator.elevator_type_mrl"/>
         <field name="interval_months">12</field>
     </record>
     <record id="template_mrl_1" model="maintenance.inspection.template.line">
@@ -167,7 +167,7 @@
     <record id="template_stair_lift" model="maintenance.inspection.template">
         <field name="name">BFS-besiktning — Trapphiss</field>
         <field name="inspection_type">statutory</field>
-        <field name="elevator_type_id" ref="elevator_base.elevator_type_stair_lift"/>
+        <field name="elevator_type_id" ref="maintenance_elevator.elevator_type_stair_lift"/>
         <field name="interval_months">12</field>
     </record>
     <record id="template_stair_lift_1" model="maintenance.inspection.template.line">
@@ -235,24 +235,25 @@
     <!-- ================================================================
          Link the templates to their elevator types.
 
-         Done here rather than on the elevator.type records: elevator_base
+         Done here rather than on the type records: maintenance_elevator
          does not know that inspection templates exist, and putting the
-         reference there would make the base module depend on this one.
+         reference there would make the reference-data module depend on
+         this one.
          ================================================================ -->
-    <function model="elevator.type" name="write">
-        <value eval="[ref('elevator_base.elevator_type_traction')]"/>
+    <function model="maintenance.elevator.type" name="write">
+        <value eval="[ref('maintenance_elevator.elevator_type_traction')]"/>
         <value eval="{'inspection_template_id': ref('template_traction'), 'inspection_interval_months': 12}"/>
     </function>
-    <function model="elevator.type" name="write">
-        <value eval="[ref('elevator_base.elevator_type_hydraulic')]"/>
+    <function model="maintenance.elevator.type" name="write">
+        <value eval="[ref('maintenance_elevator.elevator_type_hydraulic')]"/>
         <value eval="{'inspection_template_id': ref('template_hydraulic'), 'inspection_interval_months': 12}"/>
     </function>
-    <function model="elevator.type" name="write">
-        <value eval="[ref('elevator_base.elevator_type_mrl')]"/>
+    <function model="maintenance.elevator.type" name="write">
+        <value eval="[ref('maintenance_elevator.elevator_type_mrl')]"/>
         <value eval="{'inspection_template_id': ref('template_mrl'), 'inspection_interval_months': 12}"/>
     </function>
-    <function model="elevator.type" name="write">
-        <value eval="[ref('elevator_base.elevator_type_stair_lift')]"/>
+    <function model="maintenance.elevator.type" name="write">
+        <value eval="[ref('maintenance_elevator.elevator_type_stair_lift')]"/>
         <value eval="{'inspection_template_id': ref('template_stair_lift'), 'inspection_interval_months': 12}"/>
     </function>
 

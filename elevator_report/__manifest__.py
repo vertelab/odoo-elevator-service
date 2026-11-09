@@ -49,6 +49,10 @@ Elevator Report — Brandade rapporter
         'elevator_inspection',
         'elevator_contract',
         'elevator_portal',
+        # The report reads the elevator fields, which living here rather
+        # than in elevator_base is what keeps the sheet and the form in
+        # agreement.
+        'maintenance_elevator',
         # The service report is generic: what the technician did, the
         # checklist, the customer's signature. fieldservice_report owns it;
         # this module adds the protocol and the elevator sheet.

@@ -94,8 +94,9 @@ class MaintenanceInspectionTemplate(models.Model):
     _inherit = 'maintenance.inspection.template'
 
     elevator_type_id = fields.Many2one(
-        'elevator.type',
+        'maintenance.elevator.type',
         string='Elevator Type',
+        domain="[('model_type', '=', 'elevator')]",
         help='Leave empty to apply to all elevator types.',
     )
     interval_months = fields.Integer(
@@ -105,7 +106,7 @@ class MaintenanceInspectionTemplate(models.Model):
              'some. Set it per type rather than per elevator.',
     )
 
-class ElevatorType(models.Model):
+class MaintenanceElevatorType(models.Model):
     """Inspection settings on the elevator type.
 
     BFS 2011:12 sets one year for most elevators and two for some. The
@@ -113,7 +114,7 @@ class ElevatorType(models.Model):
     same type share it.
     """
 
-    _inherit = 'elevator.type'
+    _inherit = 'maintenance.elevator.type'
 
     inspection_template_id = fields.Many2one(
         'maintenance.inspection.template',

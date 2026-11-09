@@ -8,10 +8,10 @@
          interval belongs on the type, not on each elevator: 400 elevators
          of the same type share it.
          ================================================================ -->
-    <record id="elevator_type_form_inspection" model="ir.ui.view">
-        <field name="name">elevator.type.form.inspection</field>
-        <field name="model">elevator.type</field>
-        <field name="inherit_id" ref="elevator_base.elevator_type_form"/>
+    <record id="maintenance_elevator_type_form_inspection" model="ir.ui.view">
+        <field name="name">maintenance.elevator.type.form.inspection</field>
+        <field name="model">maintenance.elevator.type</field>
+        <field name="inherit_id" ref="maintenance_elevator.view_maintenance_elevator_type_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group" position="inside">
                 <group string="Inspection">

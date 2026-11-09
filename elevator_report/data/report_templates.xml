@@ -197,11 +197,9 @@
                                     <tr><td>Tillverkningsnummer</td>
                                         <td><t t-esc="equipment.manufacturing_number or '–'"/></td></tr>
                                     <tr><td>Tillverkningsår</td>
-                                        <td><t t-esc="equipment.manufacturing_year or '–'"/></td></tr>
+                                        <td><t t-esc="equipment.installation_year or '–'"/></td></tr>
                                     <tr><td>Antal stopp</td>
                                         <td><t t-esc="equipment.number_of_stops or '–'"/></td></tr>
-                                    <tr><td>Drivtyp</td>
-                                        <td><t t-esc="dict(equipment._fields['drive_type'].selection).get(equipment.drive_type) or '–'"/></td></tr>
                                     <tr><td>Styrsystem</td>
                                         <td><t t-esc="equipment.control_system_id.name or '–'"/></td></tr>
                                 </table>
@@ -210,7 +208,7 @@
                                 <h5>Besiktning och drift</h5>
                                 <table class="table table-sm table-borderless">
                                     <tr><td style="width:45%">Senaste besiktning</td>
-                                        <td><t t-esc="equipment.last_inspection_date or '–'"/></td></tr>
+                                        <td><t t-esc="equipment.last_inspection or '–'"/></td></tr>
                                     <tr><td>Nästa besiktning</td>
                                         <td><t t-esc="equipment.next_inspection_date or '–'"/></td></tr>
                                     <tr><td>Besiktningsorgan</td>

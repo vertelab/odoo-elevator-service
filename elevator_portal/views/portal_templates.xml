@@ -21,8 +21,8 @@
                                     <h5 class="mb-0">
                                         <t t-esc="equipment.elevator_number or equipment.name"/>
                                     </h5>
-                                    <span t-attf-class="badge bg-#{'success' if equipment.lifecycle_stage == 'ok' else 'warning' if equipment.lifecycle_stage in ('inspection_due', 'service_due') else 'danger'}">
-                                        <t t-esc="dict(equipment._fields['lifecycle_stage'].selection).get(equipment.lifecycle_stage)"/>
+                                    <span t-attf-class="badge bg-#{'success' if equipment.operational_status == 'operational' else 'danger' if equipment.operational_status in ('out_of_order', 'shutdown') else 'secondary'}">
+                                        <t t-esc="dict(equipment._fields['operational_status'].selection).get(equipment.operational_status)"/>
                                     </span>
                                 </div>
                                 <div class="card-body">
@@ -33,7 +33,7 @@
                                     </p>
                                     <p class="mb-1">
                                         <strong>Senaste besiktning:</strong>
-                                        <t t-esc="equipment.last_inspection_date or '–'"/>
+                                        <t t-esc="equipment.last_inspection or '–'"/>
                                     </p>
                                     <p class="mb-1" t-if="equipment.next_inspection_date">
                                         <strong>Nästa besiktning:</strong>
@@ -99,9 +99,12 @@
                             </div>
                             <div class="col-md-6">
                                 <p><strong>Senaste besiktning:</strong>
-                                    <t t-esc="equipment.last_inspection_date or '–'"/></p>
+                                    <t t-esc="equipment.last_inspection or '–'"/></p>
                                 <p><strong>Nästa besiktning:</strong>
                                     <t t-esc="equipment.next_inspection_date or '–'"/></p>
+                                <p t-if="equipment.revision_inspection_required">
+                                    <strong>Revisionsbesiktning:</strong>
+                                    <t t-esc="'utförd' if equipment.revision_inspection_done else 'krävs'"/></p>
                                 <p t-if="contract">
                                     <strong>Serviceavtal:</strong>
                                     <t t-esc="contract.visits_per_year"/> besök/år,

@@ -4,7 +4,7 @@
 {
     'website': 'https://vertel.se/apps/odoo-elevator-service/elevator_inspection',
     'name': 'Elevator Inspection — Hissbesiktning',
-    'version': '18.0.1.0.3',
+    'version': '18.0.2.0.0',
     # Version ledger: 18.0 = Odoo version. 1 = Major. Non regressionable code.
     # 0 = Minor. 1 = Bug fixes
     'license': 'AGPL-3',
@@ -24,17 +24,18 @@ Elevator Inspection — Hissbesiktning
     is not a suggestion, it is BFS 2011:12. So when an inspection is
     completed with a red remark, this module writes it onto the elevator:
 
-        equipment.inspection_remark = 'red_remark'
-            -> lifecycle_stage = 'out_of_service'
+        equipment.inspection_number = <inspection reference>
+            -> inspection_remark = 'red_remark'
+            -> operational_status = 'out_of_order', dated the inspection
 
     The elevator then shows as out of service everywhere, without anyone
     having to remember to set it.
 
     Included:
 
-        - Inspection remark written back to the elevator on completion
-        - Inspection templates per elevator type, seeded from the nine
-          types elevator_base ships
+        - Red remark written back to the elevator on completion
+        - Inspection templates per elevator type, seeded from the ten
+          types maintenance_elevator ships
         - Year wheel view: all inspections by month, coloured by remark
           level, so the inspection season is visible at a glance
         - Inspection interval per elevator type (BFS: 1 year for most,
@@ -57,6 +58,7 @@ Elevator Inspection — Hissbesiktning
     'category': 'Elevator Service',
     'depends': [
         'elevator_base',
+        'maintenance_elevator',
         'maintenance_equipment_inspection',
         'web_year_wheel',
     ],
