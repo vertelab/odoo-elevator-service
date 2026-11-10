@@ -3,14 +3,14 @@
 
 from odoo import http, _
 from odoo.http import request
-from odoo.addons.fieldservice_portal.controllers.portal import EquipmentPortal
+from odoo.addons.fieldservice_portal_vrtl.controllers.portal import EquipmentPortal
 
 
 class ElevatorPortal(EquipmentPortal):
     """Elevator additions to the generic equipment portal.
 
     The list, the fault report and the QR token come from
-    fieldservice_portal. What this adds is what a building owner needs about
+    fieldservice_portal_vrtl. What this adds is what a building owner needs about
     an elevator specifically: the inspection history and the service
     agreement, and the protocol as a PDF.
     """

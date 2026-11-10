@@ -57,9 +57,9 @@ Elevator Portal — Kundportal
         'elevator_inspection',
         'elevator_contract',
         # The portal, the fault report and the QR token are generic:
-        # fieldservice_portal owns them. This module adds the elevator
+        # fieldservice_portal_vrtl owns them. This module adds the elevator
         # parts — inspection history, agreement, and the protocol PDF.
-        'fieldservice_portal',
+        'fieldservice_portal_vrtl',
     ],
     'data': [
         'security/ir.model.access.csv',

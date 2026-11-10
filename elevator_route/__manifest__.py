@@ -52,9 +52,9 @@ Elevator Route — Ruttplanering
         'elevator_base',
         'elevator_contract',
         # Routing is generic: the sequence, the ETA and the map view apply to
-        # any field service. fieldservice_route owns it; this module only
+        # any field service. fieldservice_route_vrtl owns it; this module only
         # keeps the elevator menu entry.
-        'fieldservice_route',
+        'fieldservice_route_vrtl',
     ],
     'data': [
         'views/route_menu.xml',

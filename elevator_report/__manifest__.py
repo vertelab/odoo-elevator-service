@@ -54,9 +54,9 @@ Elevator Report — Brandade rapporter
         # agreement.
         'maintenance_elevator',
         # The service report is generic: what the technician did, the
-        # checklist, the customer's signature. fieldservice_report owns it;
+        # checklist, the customer's signature. fieldservice_report_vrtl owns it;
         # this module adds the protocol and the elevator sheet.
-        'fieldservice_report',
+        'fieldservice_report_vrtl',
     ],
     'data': [
         'security/ir.model.access.csv',
